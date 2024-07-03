@@ -1,37 +1,65 @@
 // Modal.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, materia, onGuardarCambios }) => {
-  const [nuevoNombre, setNuevoNombre] = useState(materia ? materia.nombre : '');
+const Modal = ({ isOpen, onClose, materia, onGuardarCambios, onEliminarMateria }) => {
+  const [nuevoNombre, setNuevoNombre] = useState('');
+
+  useEffect(() => {
+    if (materia) {
+      setNuevoNombre(materia.nombre);
+    }
+  }, [materia]);
 
   const handleChangeNombre = (e) => {
     setNuevoNombre(e.target.value);
   };
 
-  const handleGuardarCambios = () => {
-    onGuardarCambios(nuevoNombre);
-    onClose();
+  const handleGuardar = () => {
+    if (nuevoNombre.trim() !== '') {
+      onGuardarCambios(nuevoNombre);
+    } else {
+      alert('Por favor ingresa un nombre válido.');
+    }
   };
 
-  if (!isOpen || !materia) return null;
+  const handleEliminar = () => {
+    const confirmacion = window.confirm(`¿Estás seguro de eliminar la materia "${materia.nombre}"?`);
+    if (confirmacion) {
+      onEliminarMateria();
+    }
+  };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <span className="close-button" onClick={onClose}>&times;</span>
-        <div>
-          <h2>Cambiar Nombre de Materia</h2>
-          <input type="text" value={nuevoNombre} onChange={handleChangeNombre} />
-          <img src={materia.imagen} alt={materia.nombre} />
-        </div>
-        <div className="modal-buttons">
-          <button className="cancel-button" onClick={onClose}>Cancelar</button>
-          <button className="save-button" onClick={handleGuardarCambios}>Guardar</button>
+    isOpen && (
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+         
+          <div className="modal-body">
+          <div className="image-container">
+              {materia && (
+                <img src={materia.imagen} />
+              )}
+            </div>
+            <div className="field-container">
+              <label htmlFor="nombre">Nombre de la materia:</label>
+              <input
+                type="text"
+                id="nombre"
+                value={nuevoNombre}
+                onChange={handleChangeNombre}
+              />
+            </div>
+            
+          </div>
+          <div className="modal-buttons">
+            <button className="cancel-button" onClick={onClose}>Cancelar</button>
+            <button className="save-button" onClick={handleGuardar}>Guardar</button>
+          </div>
         </div>
       </div>
-    </div>
+    )
   );
 };
 

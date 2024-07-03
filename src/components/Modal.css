@@ -10,9 +10,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
@@ -20,24 +20,75 @@
     position: relative;
     width: 400px;
     max-width: 90%;
-  }
-  
-  .close-button {
+}
+
+.close-button {
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
     font-size: 24px;
     color: #888;
-  }
-  
-  .modal-buttons {
+}
+
+.modal-body {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+}
+
+.field-container {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos en columna */
+    align-items: center; /* Centra horizontalmente */
+    margin-bottom: 20px;
+}
+
+.field-container label {
+    font-weight: bold;
+}
+
+.field-container input {
+    width: 300px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px; /* Espacio adicional arriba del input */
+    text-align: center;
+}
+
+/* Modal.css */
+
+.image-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 300px; /* Ajusta según sea necesario */
+    margin-bottom: 20px;
+}
+
+.image-container img {
+    width: 200px;
+    /* Ajustado el ancho de la imagen */
+    height: auto;
+    /* Ajustado el alto de la imagen */
+    object-fit: contain;
+    /* Ajuste para que la imagen se ajuste dentro del contenedor */
+}
+
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
     margin-top: 20px;
-  }
-  
-  .cancel-button {
+}
+
+.cancel-button {
     background-color: #d9534f;
     color: #fff;
     border: none;
@@ -45,14 +96,13 @@
     border-radius: 5px;
     cursor: pointer;
     margin-right: 10px;
-  }
-  
-  .save-button {
+}
+
+.save-button {
     background-color: #5cb85c;
     color: #fff;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
+}
