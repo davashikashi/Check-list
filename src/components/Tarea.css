@@ -1,0 +1,33 @@
+/* Tarea.css */
+
+.tareas-materia {
+    padding: 20px;
+  }
+  
+  .back-button {
+    cursor: pointer;
+    margin-bottom: 10px;
+    color: #007bff; /* Color azul para el enlace */
+  }
+  
+  .back-button span {
+    text-decoration: underline; /* Subrayado para indicar que es un enlace */
+  }
+  
+  .tareas-materia h2 {
+    margin-bottom: 10px;
+  }
+  
+  .tareas-materia ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .tareas-materia li {
+    margin-bottom: 10px;
+  }
+  
+  .tareas-materia input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
