@@ -35,7 +35,6 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Materias</h1>
       <ListaMaterias materias={materias} onAgregarMateria={handleAgregarMateria} />
     </div>
   );
