@@ -4,12 +4,13 @@ import Modal from './Modal';
 import ModalMateria from './ModalMateria';
 import './ListaMaterias.css';
 
-function ListaMaterias({ materias, onAgregarMateria }) {
+function ListaMaterias({ listaMaterias, onAgregarMateria }) {
   const [materiaSeleccionada, setMateriaSeleccionada] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [nuevoModalAbierto, setNuevoModalAbierto] = useState(false);
   const [accionMateria, setAccionMateria] = useState(null);
   const [materiaParaEditar, setMateriaParaEditar] = useState(null);
+  const [materias,setMaterias] = useState(listaMaterias)
 
   const handleClickMateria = (index) => {
     if (!modalAbierto) {
@@ -29,6 +30,8 @@ function ListaMaterias({ materias, onAgregarMateria }) {
       const nuevasMaterias = [...materias];
       nuevasMaterias.splice(index, 1);
       setMaterias(nuevasMaterias);
+      handleCerrarModal()
+
     }
   };
 

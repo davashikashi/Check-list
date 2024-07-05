@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './ModalDetalleTarea.css';
+import { FaTrash } from 'react-icons/fa';
 
-function ModalDetalleTarea({ tarea, onClose, onActualizarTarea }) {
+function ModalDetalleTarea({ tarea, onClose, onActualizarTarea, onEliminarTarea }) {
   const [tareaDetalle, setTareaDetalle] = useState(tarea);
 
   useEffect(() => {
@@ -14,9 +15,14 @@ function ModalDetalleTarea({ tarea, onClose, onActualizarTarea }) {
     onActualizarTarea(tareaActualizada);
   };
 
+  const handleNombreChange = (e) => {
+    const nombre = e.target.value;
+    setTareaDetalle({ ...tareaDetalle, nombre });
+  };
+
   const handleDescripcionChange = (e) => {
-    const tareaActualizada = { ...tareaDetalle, descripcion: e.target.value };
-    setTareaDetalle(tareaActualizada);
+    const descripcion = e.target.value;
+    setTareaDetalle({ ...tareaDetalle, descripcion });
   };
 
   const handleGuardarCambios = () => {
@@ -27,7 +33,14 @@ function ModalDetalleTarea({ tarea, onClose, onActualizarTarea }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>{tareaDetalle.nombre}</h2>
+        <h2>
+          <input
+            type="text"
+            value={tareaDetalle.nombre}
+            onChange={handleNombreChange}
+            className="nombre-tarea-input"
+          />
+        </h2>
         <div className="modal-checkbox-container">
           <label>
             <input
@@ -37,6 +50,9 @@ function ModalDetalleTarea({ tarea, onClose, onActualizarTarea }) {
             />
             Completada
           </label>
+          <button className="delete-button" onClick={() => onEliminarTarea(tareaDetalle.id)}>
+            <FaTrash />
+          </button>
         </div>
         <p>Fecha de inicio: {tareaDetalle.fechaInicio}</p>
         <p>Fecha de fin: {tareaDetalle.fechaFin}</p>
@@ -45,6 +61,7 @@ function ModalDetalleTarea({ tarea, onClose, onActualizarTarea }) {
           <textarea
             value={tareaDetalle.descripcion || ''}
             onChange={handleDescripcionChange}
+            className="descripcion-textarea"
           />
         </div>
         <button onClick={handleGuardarCambios}>Guardar</button>

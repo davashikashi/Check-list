@@ -1,3 +1,5 @@
+// Tarea.js
+
 import React, { useState } from 'react';
 import './Tarea.css';
 import ModalDetalleTarea from './ModalDetalleTarea';
@@ -5,6 +7,10 @@ import ModalDetalleTarea from './ModalDetalleTarea';
 function Tarea({ materia, onClose }) {
   const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
   const [tareas, setTareas] = useState(materia.tareas);
+
+  if(!tareas){
+    return null;
+  }
 
   const handleSeleccionarTarea = (tareaId) => {
     setTareaSeleccionada(tareaId);
@@ -30,6 +36,14 @@ function Tarea({ materia, onClose }) {
     );
   };
 
+  const handleEliminarTarea = (tareaId) => {
+    const confirmacion = window.confirm(`¿Estás seguro de eliminar la tarea?`);
+    if (confirmacion) {
+      setTareas((prevTareas) => prevTareas.filter((tarea) => tarea.id !== tareaId));
+      setTareaSeleccionada(null);
+    }
+  };
+
   return (
     <div className="tareas">
       <ul>
@@ -39,9 +53,7 @@ function Tarea({ materia, onClose }) {
             onClick={() => handleSeleccionarTarea(tarea.id)}
             className={`tarea-item ${tarea.completada ? 'completed' : ''}`}
           >
-            <label>
-              {tarea.nombre}
-            </label>
+            <label>{tarea.nombre}</label>
           </li>
         ))}
       </ul>
@@ -54,6 +66,7 @@ function Tarea({ materia, onClose }) {
           tarea={tareas.find((tarea) => tarea.id === tareaSeleccionada)}
           onClose={handleCerrarModal}
           onActualizarTarea={handleActualizarTarea}
+          onEliminarTarea={() => handleEliminarTarea(tareaSeleccionada)}
         />
       )}
     </div>

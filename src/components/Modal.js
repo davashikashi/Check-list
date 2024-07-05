@@ -25,12 +25,6 @@ const Modal = ({ isOpen, onClose, materia, onGuardarCambios, onEliminarMateria }
         }
     };
 
-    const handleEliminar = () => {
-        const confirmacion = window.confirm(`¿Estás seguro de eliminar la materia "${materia.nombre}"?`);
-        if (confirmacion) {
-            onEliminarMateria();
-        }
-    };
 
     return (
         isOpen && (
@@ -52,7 +46,7 @@ const Modal = ({ isOpen, onClose, materia, onGuardarCambios, onEliminarMateria }
                             />
                         </div>
                     </div>
-                    <button className="delete-button" onClick={handleEliminar}>
+                    <button className="delete-button" onClick={() => onEliminarMateria(materia.id)}>
                         <FaTrash /> {//icono de basurero
                         }
                     </button>
