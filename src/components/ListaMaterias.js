@@ -73,7 +73,7 @@ function ListaMaterias({ materias, onAgregarMateria }) {
               onClick={() => handleClickMateria(index)}
               className={`materia-item ${materiaSeleccionada === index ? 'selected' : ''}`}
             >
-              <img src={materia.imagen}  />
+              <img src={materia.imagen} alt="" />
               <div className="materia-nombre">{materia.nombre}</div>
               <button
                 className="more-button"
@@ -88,7 +88,7 @@ function ListaMaterias({ materias, onAgregarMateria }) {
           ))}
         </ul>
 
-        <button className="add-button" onClick={handleAbrirNuevoModal}>
+        <button className="add-materia-button" onClick={handleAbrirNuevoModal}>
           Añadir Materia
         </button>
       </div>

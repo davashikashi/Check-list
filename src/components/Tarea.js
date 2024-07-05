@@ -4,6 +4,7 @@ import ModalDetalleTarea from './ModalDetalleTarea';
 
 function Tarea({ materia, onClose }) {
   const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
+  const [tareas, setTareas] = useState(materia.tareas);
 
   const handleSeleccionarTarea = (tareaId) => {
     setTareaSeleccionada(tareaId);
@@ -13,26 +14,46 @@ function Tarea({ materia, onClose }) {
     setTareaSeleccionada(null);
   };
 
+  const handleCheckboxChange = (tareaId) => {
+    setTareas((prevTareas) =>
+      prevTareas.map((tarea) =>
+        tarea.id === tareaId ? { ...tarea, completada: !tarea.completada } : tarea
+      )
+    );
+  };
+
+  const handleActualizarTarea = (tareaActualizada) => {
+    setTareas((prevTareas) =>
+      prevTareas.map((tarea) =>
+        tarea.id === tareaActualizada.id ? tareaActualizada : tarea
+      )
+    );
+  };
+
   return (
-    <div className="tareas-materia">
+    <div className="tareas">
       <ul>
-        {materia.tareas.map((tarea) => (
-          <li key={tarea.id} onClick={() => handleSeleccionarTarea(tarea.id)} className="tarea-item">
+        {tareas.map((tarea) => (
+          <li
+            key={tarea.id}
+            onClick={() => handleSeleccionarTarea(tarea.id)}
+            className={`tarea-item ${tarea.completada ? 'completed' : ''}`}
+          >
             <label>
-              <input type="checkbox" checked={tarea.completada} onChange={() => {}} />
-              {tarea.nombre} - {tarea.fechaInicio} hasta {tarea.fechaFin}
+              {tarea.nombre}
             </label>
           </li>
         ))}
       </ul>
-      <button className="add-task-button-container" onClick={() => {}}>
+      <button className="add-tarea-button" onClick={() => {}}>
         Añadir Tarea
       </button>
 
       {tareaSeleccionada !== null && (
         <ModalDetalleTarea
-          tarea={materia.tareas.find((tarea) => tarea.id === tareaSeleccionada)}
+          tarea={tareas.find((tarea) => tarea.id === tareaSeleccionada)}
           onClose={handleCerrarModal}
+          onActualizarTarea={handleActualizarTarea}
         />
       )}
     </div>

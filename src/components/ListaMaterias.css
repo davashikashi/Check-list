@@ -80,10 +80,10 @@
     margin-bottom: 20px;
 }
 
-.add-button {
+.add-materia-button {
     position: fixed; /* Fija el botón con respecto a la ventana */
     bottom: 30px;
-    right: calc(50% + 20px); /* Calcula la posición desde el lado izquierdo */
+    right: calc(50% + 20px); /* Asegura que el botón está en la esquina inferior izquierda */
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
@@ -92,8 +92,22 @@
     cursor: pointer;
 }
 
-.add-button:hover {
+.add-materia-button:hover {
     background-color: #0056b3;
 }
 
+.add-tarea-button {
+    position: fixed; /* Fija el botón con respecto a la ventana */
+    bottom: 30px;
+    right: 20px; /* Asegura que el botón está en la esquina inferior derecha */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
+.add-tarea-button:hover {
+    background-color: #0056b3;
+}

@@ -1,29 +1,54 @@
-// ModalDetalleTarea.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './ModalDetalleTarea.css';
 
-function ModalDetalleTarea({ tarea, onClose }) {
+function ModalDetalleTarea({ tarea, onClose, onActualizarTarea }) {
+  const [tareaDetalle, setTareaDetalle] = useState(tarea);
+
+  useEffect(() => {
+    setTareaDetalle(tarea);
+  }, [tarea]);
+
+  const handleCheckboxChange = () => {
+    const tareaActualizada = { ...tareaDetalle, completada: !tareaDetalle.completada };
+    setTareaDetalle(tareaActualizada);
+    onActualizarTarea(tareaActualizada);
+  };
+
+  const handleDescripcionChange = (e) => {
+    const tareaActualizada = { ...tareaDetalle, descripcion: e.target.value };
+    setTareaDetalle(tareaActualizada);
+  };
+
+  const handleGuardarCambios = () => {
+    onActualizarTarea(tareaDetalle);
+    onClose();
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>
-          &times;
-        </button>
-        <div className="modal-body">
-          <div className="field-container">
-            <label>Nombre de la Tarea:</label>
-            <div>{tarea.nombre}</div>
-          </div>
-          <div className="field-container">
-            <label>Fecha de Inicio:</label>
-            <div>{tarea.fechaInicio}</div>
-          </div>
-          <div className="field-container">
-            <label>Fecha de Fin:</label>
-            <div>{tarea.fechaFin}</div>
-          </div>
-          {/* Agrega más campos según sea necesario, como descripción u otros detalles */}
+        <h2>{tareaDetalle.nombre}</h2>
+        <div className="modal-checkbox-container">
+          <label>
+            <input
+              type="checkbox"
+              checked={tareaDetalle.completada}
+              onChange={handleCheckboxChange}
+            />
+            Completada
+          </label>
         </div>
+        <p>Fecha de inicio: {tareaDetalle.fechaInicio}</p>
+        <p>Fecha de fin: {tareaDetalle.fechaFin}</p>
+        <div className="descripcion-container">
+          <label>Descripción:</label>
+          <textarea
+            value={tareaDetalle.descripcion || ''}
+            onChange={handleDescripcionChange}
+          />
+        </div>
+        <button onClick={handleGuardarCambios}>Guardar</button>
+        <button onClick={onClose}>Cerrar</button>
       </div>
     </div>
   );
