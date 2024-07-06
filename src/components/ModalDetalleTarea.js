@@ -10,23 +10,22 @@ function ModalDetalleTarea({ tarea, onClose, onActualizarTarea, onEliminarTarea 
   }, [tarea]);
 
   const handleCheckboxChange = () => {
-    const tareaActualizada = { ...tareaDetalle, completada: !tareaDetalle.completada };
+    const tareaActualizada = { ...tareaDetalle, checkBox: !tareaDetalle.checkBox };
     setTareaDetalle(tareaActualizada);
-    onActualizarTarea(tareaActualizada);
   };
 
   const handleNombreChange = (e) => {
-    const nombre = e.target.value;
-    setTareaDetalle({ ...tareaDetalle, nombre });
+    const taskName = e.target.value;
+    setTareaDetalle({ ...tareaDetalle, taskName });
   };
 
   const handleDescripcionChange = (e) => {
-    const descripcion = e.target.value;
-    setTareaDetalle({ ...tareaDetalle, descripcion });
+    const description = e.target.value;
+    setTareaDetalle({ ...tareaDetalle, description });
   };
 
   const handleGuardarCambios = () => {
-    onActualizarTarea(tareaDetalle);
+    onActualizarTarea(tareaDetalle, tareaDetalle.projectId);
     onClose();
   };
 
@@ -36,7 +35,7 @@ function ModalDetalleTarea({ tarea, onClose, onActualizarTarea, onEliminarTarea 
         <h2>
           <input
             type="text"
-            value={tareaDetalle.nombre}
+            value={tareaDetalle.taskName}
             onChange={handleNombreChange}
             className="nombre-tarea-input"
           />
@@ -45,7 +44,7 @@ function ModalDetalleTarea({ tarea, onClose, onActualizarTarea, onEliminarTarea 
           <label>
             <input
               type="checkbox"
-              checked={tareaDetalle.completada}
+              checked={tareaDetalle.checkBox}
               onChange={handleCheckboxChange}
             />
             Completada
@@ -55,17 +54,19 @@ function ModalDetalleTarea({ tarea, onClose, onActualizarTarea, onEliminarTarea 
           </button>
         </div>
         <p>Fecha de inicio: {tareaDetalle.fechaInicio}</p>
-        <p>Fecha de fin: {tareaDetalle.fechaFin}</p>
+        <p>Fecha de fin: {tareaDetalle.fechaFinal}</p>
         <div className="descripcion-container">
           <label>Descripción:</label>
           <textarea
-            value={tareaDetalle.descripcion || ''}
+            value={tareaDetalle.description || ''}
             onChange={handleDescripcionChange}
             className="descripcion-textarea"
           />
         </div>
-        <button onClick={handleGuardarCambios}>Guardar</button>
-        <button onClick={onClose}>Cerrar</button>
+        <div className='modal-buttons'>
+          <button className='cancel-button' onClick={onClose}>Cerrar</button>
+          <button className='save-button' onClick={handleGuardarCambios}>Guardar</button>
+        </div>
       </div>
     </div>
   );

@@ -1,41 +1,88 @@
-// App.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListaMaterias from './ListaMaterias';
+import axios from 'axios';
 
 function App() {
-  const [materias, setMaterias] = useState([
-    {
-      id: 1,
-      nombre: 'Matemáticas',
-      imagen: "https://imgs.search.brave.com/OjFWHfsQNiI5rFutQLEguY2kZacU387mKWTP4JK_UnA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuZG9jc2l0eS5j/b20vc2RrL2hlYWRl/ci9vdHRpZW5pLXB1/bnRpLnN2Zw",
-      tareas: [
-        { id: 1, nombre: 'Resolver problemas', fechaInicio: '2024-07-01', fechaFin: '2024-07-05', completada: false, descripcion: 'Resolver los problemas del capítulo 3' },
-        { id: 2, nombre: 'Estudiar para el examen', fechaInicio: '2024-07-05', fechaFin: '2024-07-10', completada: true, descripcion: 'Repasar todos los temas vistos hasta ahora' }
-      ]
-    },
-    {
-      id: 2,
-      nombre: 'Historia',
-      imagen: "https://imgs.search.brave.com/OjFWHfsQNiI5rFutQLEguY2kZacU387mKWTP4JK_UnA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuZG9jc2l0eS5j/b20vc2RrL2hlYWRl/ci9vdHRpZW5pLXB1/bnRpLnN2Zw",
-      tareas: [
-        { id: 1, nombre: 'Leer capítulo 5', fechaInicio: '2024-07-03', fechaFin: '2024-07-07', completada: false, descripcion: 'Leer y resumir el capítulo 5 del libro de texto' },
-        { id: 2, nombre: 'Preparar presentación', fechaInicio: '2024-07-08', fechaFin: '2024-07-12', completada: false, descripcion: 'Preparar una presentación sobre la Revolución Industrial' }
-      ]
-    }
-  ]);
 
-  const handleAgregarMateria = (nombre) => {
-    const nuevaMateria = {
-      id: materias.length + 1,
-      nombre,
-      tareas: []
-    };
-    setMaterias([...materias, nuevaMateria]);
+  const [materias, setMaterias] = useState([])
+
+  useEffect(() => {
+    fetchMaterias(); // Llama a la función para obtener materias cuando el componente se monte
+  }, []);
+
+  const fetchMaterias = async () => {
+    try {
+      const response = await fetch('https://3jt241sk-3000.use.devtunnels.ms/projects');
+      if (!response.ok) {
+        throw new Error('No se pudo obtener las materias');
+      } else {
+        const data = await response.json();
+        console.log('Materias obtenidas:', data);
+        setMaterias(data);
+      }
+    } catch (error) {
+      console.error('Error al obtener las materias:', error);
+      // Aquí puedes manejar el error, mostrar un mensaje al usuario, etc.
+    }
   };
+
+
+  const handleAgregarMateria = async (nombre, imagenURL) => {
+    try {
+      const nuevaMateria = {
+        asignatureName: nombre,
+        img: imagenURL,
+        tasks: []
+      };
+
+      // Realizar la solicitud POST para agregar la nueva materia
+      const response = await axios.post('https://3jt241sk-3000.use.devtunnels.ms/projects', nuevaMateria);
+      console.log('Materia agregada:', response.data);
+
+      // Actualizar el estado local de materias con la nueva materia añadida
+      setMaterias([...materias, response.data]);
+    } catch (error) {
+      console.error('Error al agregar la materia:', error);
+      // Aquí puedes manejar el error, mostrar un mensaje al usuario, etc.
+    }
+  };
+
+
+  const handleEliminarMateria = async (materiaId) => {
+    try {
+      const confirmacion = window.confirm(`¿Estás seguro de eliminar la materia?`);
+      if (confirmacion) {
+        await axios.delete(`https://3jt241sk-3000.use.devtunnels.ms/projects/${materiaId}`);
+        const nuevasMaterias = materias.filter(materia => materia.id !== materiaId);
+        setMaterias(nuevasMaterias);
+      }
+    } catch (error) {
+      console.error('Error al eliminar la materia:', error);
+      // Aquí puedes manejar el error, mostrar un mensaje al usuario, etc.
+    }
+  };
+
+  const handleEditarMateria = async (materiaId, nuevoNombre) => {
+    try {
+      const materiaActualizada = {
+        asignatureName: nuevoNombre
+      };
+      await axios.patch(`https://3jt241sk-3000.use.devtunnels.ms/projects/${materiaId}`, materiaActualizada);
+      fetchMaterias(); // Actualiza la lista de materias después de editar
+    } catch (error) {
+      console.error('Error al editar la materia:', error);
+    }
+  };
+  
 
   return (
     <div className="App">
-      <ListaMaterias listaMaterias={materias} onAgregarMateria={handleAgregarMateria} />
+      <ListaMaterias
+        listaMaterias={materias}
+        onAgregarMateria={handleAgregarMateria}
+        onEliminarMateria={handleEliminarMateria}
+        onEditarMateria={handleEditarMateria}
+      />
     </div>
   );
 }

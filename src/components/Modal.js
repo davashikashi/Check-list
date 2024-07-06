@@ -1,5 +1,3 @@
-// Modal.js
-
 import React, { useState, useEffect } from 'react';
 import './Modal.css';
 import { FaTrash } from 'react-icons/fa';
@@ -9,7 +7,7 @@ const Modal = ({ isOpen, onClose, materia, onGuardarCambios, onEliminarMateria }
 
     useEffect(() => {
         if (materia) {
-            setNuevoNombre(materia.nombre);
+            setNuevoNombre(materia.asignatureName);
         }
     }, [materia]);
 
@@ -19,12 +17,11 @@ const Modal = ({ isOpen, onClose, materia, onGuardarCambios, onEliminarMateria }
 
     const handleGuardar = () => {
         if (nuevoNombre.trim() !== '') {
-            onGuardarCambios(nuevoNombre);
+            onGuardarCambios(materia.id,nuevoNombre);
         } else {
             alert('Por favor ingresa un nombre válido.');
         }
     };
-
 
     return (
         isOpen && (
@@ -33,7 +30,7 @@ const Modal = ({ isOpen, onClose, materia, onGuardarCambios, onEliminarMateria }
                     <div className="modal-body">
                         <div className="image-container">
                             {materia && (
-                                <img src={materia.imagen} alt={`Imagen de ${materia.nombre}`} />
+                                <img src={materia.img}  />
                             )}
                         </div>
                         <div className="field-container">

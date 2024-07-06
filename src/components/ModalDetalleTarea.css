@@ -56,11 +56,32 @@
     cursor: pointer;
 }
 
-.modal-content button:first-of-type {
-    background-color: #007bff;
-    color: #fff;
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.modal-content button:last-of-type {
-    background-color: #ccc;
+.delete-button{
+    background-color: #450000;
 }
+
+.cancel-button {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.save-button {
+    background-color: #5cb85c;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+

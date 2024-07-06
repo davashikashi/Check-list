@@ -10,6 +10,7 @@ function ModalMateria({ isOpen, onClose, onAgregarMateria }) {
         if (nombre && imagenURL) {
             onAgregarMateria(nombre, imagenURL);
             onClose();
+            
         } else {
             alert('Por favor, completa todos los campos.');
         }

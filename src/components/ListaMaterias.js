@@ -1,50 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tarea from './Tarea';
 import Modal from './Modal';
 import ModalMateria from './ModalMateria';
 import './ListaMaterias.css';
 
-function ListaMaterias({ listaMaterias, onAgregarMateria }) {
+function ListaMaterias({ listaMaterias, onAgregarMateria, onEliminarMateria, onEditarMateria }) {
   const [materiaSeleccionada, setMateriaSeleccionada] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [nuevoModalAbierto, setNuevoModalAbierto] = useState(false);
-  const [accionMateria, setAccionMateria] = useState(null);
   const [materiaParaEditar, setMateriaParaEditar] = useState(null);
-  const [materias,setMaterias] = useState(listaMaterias)
+  const [materias, setMaterias] = useState(listaMaterias);
+
+  useEffect(() => {
+    setMaterias(listaMaterias); // Sincroniza el estado de materias con listaMaterias cuando listaMaterias cambie
+  }, [listaMaterias]);
 
   const handleClickMateria = (index) => {
-    if (!modalAbierto) {
-      setMateriaSeleccionada(index);
-    }
+    setMateriaSeleccionada(index);
   };
 
   const handleAbrirModalEditar = (index) => {
     setMateriaParaEditar(index);
     setModalAbierto(true);
-    setAccionMateria('editar');
-  };
-
-  const handleEliminarMateria = (index) => {
-    const confirmacion = window.confirm(`¿Estás seguro de eliminar la materia "${materias[index].nombre}"?`);
-    if (confirmacion) {
-      const nuevasMaterias = [...materias];
-      nuevasMaterias.splice(index, 1);
-      setMaterias(nuevasMaterias);
-      handleCerrarModal()
-
-    }
   };
 
   const handleCerrarModal = () => {
     setModalAbierto(false);
-    setAccionMateria(null);
     setMateriaParaEditar(null);
   };
 
-  const handleGuardarCambios = (nuevoNombre) => {
-    const nuevasMaterias = [...materias];
-    nuevasMaterias[materiaParaEditar].nombre = nuevoNombre;
-    setMaterias(nuevasMaterias);
+  const handleGuardarCambios = (materiaID,nuevoNombre) => {
+    onEditarMateria(materiaID,nuevoNombre)
+    setMaterias(materias)
     handleCerrarModal();
   };
 
@@ -58,11 +45,19 @@ function ListaMaterias({ listaMaterias, onAgregarMateria }) {
 
   const handleAgregarMateriaDesdeModal = (nombre, imagenURL) => {
     onAgregarMateria(nombre, imagenURL);
+    setNuevoModalAbierto(false);
   };
 
-  const handleAgregarTarea = () => {
-    // Implementa la lógica para agregar una tarea aquí
-    console.log('Añadir tarea');
+  const handleDeleteMateria = (materiaID) => {
+    onEliminarMateria(materiaID);
+    setModalAbierto(false);
+  };
+
+  const handleActualizarTareas = (materiaId, nuevasTareas) => {
+    const nuevasMaterias = materias.map((materia) =>
+      materia.id === materiaId ? { ...materia, tareas: nuevasTareas } : materia
+    );
+    setMaterias(nuevasMaterias);
   };
 
   return (
@@ -76,8 +71,8 @@ function ListaMaterias({ listaMaterias, onAgregarMateria }) {
               onClick={() => handleClickMateria(index)}
               className={`materia-item ${materiaSeleccionada === index ? 'selected' : ''}`}
             >
-              <img src={materia.imagen} alt="" />
-              <div className="materia-nombre">{materia.nombre}</div>
+              <img src={materia.img} alt="" />
+              <div className="materia-nombre">{materia.asignatureName}</div>
               <button
                 className="more-button"
                 onClick={(e) => {
@@ -98,10 +93,14 @@ function ListaMaterias({ listaMaterias, onAgregarMateria }) {
 
       <div className="tareas">
         <h2>Tareas</h2>
-        {materiaSeleccionada !== null && (
-          <Tarea materia={materias[materiaSeleccionada]} onClose={() => setMateriaSeleccionada(null)} />
+        {materiaSeleccionada !== null && materias[materiaSeleccionada] && (
+          <Tarea
+            key={materiaSeleccionada} // Asegura que se vuelve a renderizar al cambiar la selección
+            materia={materias[materiaSeleccionada]}
+            onClose={() => setMateriaSeleccionada(null)}
+            onActualizarTareas={handleActualizarTareas} // Pasar el callback para actualizar tareas
+          />
         )}
-        
       </div>
 
       <Modal
@@ -109,7 +108,7 @@ function ListaMaterias({ listaMaterias, onAgregarMateria }) {
         onClose={handleCerrarModal}
         materia={materias[materiaParaEditar]}
         onGuardarCambios={handleGuardarCambios}
-        onEliminarMateria={() => handleEliminarMateria(materiaParaEditar)}
+        onEliminarMateria={handleDeleteMateria}
       />
 
       <ModalMateria

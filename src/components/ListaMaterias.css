@@ -85,7 +85,7 @@
     bottom: 30px;
     right: calc(50% + 20px); /* Asegura que el botón está en la esquina inferior izquierda */
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #5cb85c;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -93,7 +93,7 @@
 }
 
 .add-materia-button:hover {
-    background-color: #0056b3;
+    background-color: #5cb85c;
 }
 
 .add-tarea-button {
@@ -101,7 +101,7 @@
     bottom: 30px;
     right: 20px; /* Asegura que el botón está en la esquina inferior derecha */
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #5cb85c;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -109,5 +109,5 @@
 }
 
 .add-tarea-button:hover {
-    background-color: #0056b3;
+    background-color: #5cb85c;
 }

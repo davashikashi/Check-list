@@ -10,6 +10,12 @@
     justify-content: center;
     align-items: center;
   }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
   
   .modal-materia-content {
     background: white;
@@ -29,4 +35,6 @@
     margin: 5px;
     padding: 10px 20px;
   }
+
+  
   
